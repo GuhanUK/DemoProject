@@ -41,33 +41,7 @@ const Login = () => {
           ? jwtDecode(response.data?.authToken)
           : "";
         console.log("decodedUser--->", decodedUser);
-        let result = {};
-        // if (userToken) {
-        //   result = {
-        //     isLoggedIn: true,
-        //     authToken: userToken,
-        //     user: decodedUser,
-        //   };
-        // }
-        // if(obj.emailId === "admin@gmail.com" && obj.password === "admin@001"){
-        //   console.log("This is admin user!!");
-        //   localStorage.setItem("isAdmin", "Admin");
-        //   localStorage.setItem("isLoggedIn", JSON.stringify(result.isLoggedIn));
-        //   localStorage.setItem("user", JSON.stringify(result));
-        //   localStorage.setItem("userData", JSON.stringify(decodedUser));
-        //   const authUser = localStorage.getItem("user");
-        //   const user = JSON.parse(authUser);
-        //   navigate("/admin");
-        // }
-        // else{
-        //   localStorage.setItem("isAdmin", "User");
-        //   localStorage.setItem("isLoggedIn", JSON.stringify(result.isLoggedIn));
-        //   localStorage.setItem("user", JSON.stringify(result));
-        //   localStorage.setItem("userData", JSON.stringify(decodedUser));
-        //   const authUser = localStorage.getItem("user");
-        //   const user = JSON.parse(authUser);
-        //   navigate("/");
-        // }
+        navigate("/dashboard")
       }
     } catch (error) {
       console.log("error while making api call..", error);
