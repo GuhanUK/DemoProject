@@ -56,15 +56,15 @@ export const SignUp = () => {
   };
   console.log("roleName--->", roleName);
   const handleSubmit = async (values) => {
-    const { firstName, email, password, role_id, org_id } = values;
+    const { firstName, email, password, role_id, org_id, userId } = values;
     let obj = {
-      user_id: "",
+      user_id: userId,
       userName: firstName,
       emailId: email,
       password: password,
       role_id: role_id,
       org_id: org_id,
-      org_name: orgName,
+      org_name: orgName.label,
       role_name: roleName.label,
     };
     console.log("submitted!!", obj);
@@ -111,6 +111,7 @@ export const SignUp = () => {
                 layout="vertical"
                 initialValues={{
                   firstName: "",
+                  userId: "",
                   email: "",
                   password: "",
                   role_id: "",
@@ -130,6 +131,24 @@ export const SignUp = () => {
                 >
                   <Input
                     placeholder="Enter First Name"
+                    className="login_form_input"
+                    maxLength={50}
+                  />
+                </Form.Item>
+                <Form.Item
+                  label="User ID"
+                  className="signup_form_label mb-1"
+                  name="userId"
+                  rules={[
+                    {
+                      required: true,
+                      type: "text",
+                      message: "userId Id is required!",
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder="Enter your userId Id"
                     className="login_form_input"
                     maxLength={50}
                   />
