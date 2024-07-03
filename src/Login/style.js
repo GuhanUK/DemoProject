@@ -63,6 +63,7 @@ const LoginStyle = Styled.div`
         font-weight: 600;
     }
     .login_form_input{
+        width: 100%;
         height: 40px;
     }
     .signup_link{
@@ -73,7 +74,9 @@ const LoginStyle = Styled.div`
         color:white;
         text-align:left;
     }
-
+    .existing_content{
+        width: 100%;
+    }
     .payment_form{
         display: flex;
         flex-wrap: wrap;

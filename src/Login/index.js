@@ -1,21 +1,105 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LoginStyle from "./style";
 import { Button, Form, Input, Spin } from "antd";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  let baseUrl = "http://localhost:8080/login";
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  console.log("Login ~ isLoggedIn---->", isLoggedIn);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      console.log("inside if condition");
+      navigate("/");
+    }
+    // else{
+    console.log("inside else condition");
+    navigate("/login");
+    // }
+  }, [isLoggedIn]);
+
+  const handleSubmit = async (e) => {
+    console.log("submitted!!", e);
+    let obj = {
+      userName: e.email,
+      password: e.password,
+    };
+    setLoading(true);
+    try {
+      let response = await axios.post(`${baseUrl}login`, obj);
+      if (response.data.status) {
+        setLoading(false);
+        const userToken = response?.data?.authToken;
+        const decodedUser = userToken
+          ? jwtDecode(response.data?.authToken)
+          : "";
+        console.log("decodedUser--->", decodedUser);
+        let result = {};
+        // if (userToken) {
+        //   result = {
+        //     isLoggedIn: true,
+        //     authToken: userToken,
+        //     user: decodedUser,
+        //   };
+        // }
+        // if(obj.emailId === "admin@gmail.com" && obj.password === "admin@001"){
+        //   console.log("This is admin user!!");
+        //   localStorage.setItem("isAdmin", "Admin");
+        //   localStorage.setItem("isLoggedIn", JSON.stringify(result.isLoggedIn));
+        //   localStorage.setItem("user", JSON.stringify(result));
+        //   localStorage.setItem("userData", JSON.stringify(decodedUser));
+        //   const authUser = localStorage.getItem("user");
+        //   const user = JSON.parse(authUser);
+        //   navigate("/admin");
+        // }
+        // else{
+        //   localStorage.setItem("isAdmin", "User");
+        //   localStorage.setItem("isLoggedIn", JSON.stringify(result.isLoggedIn));
+        //   localStorage.setItem("user", JSON.stringify(result));
+        //   localStorage.setItem("userData", JSON.stringify(decodedUser));
+        //   const authUser = localStorage.getItem("user");
+        //   const user = JSON.parse(authUser);
+        //   navigate("/");
+        // }
+      }
+    } catch (error) {
+      console.log("error while making api call..", error);
+      let message = error?.response?.data?.message || "Error while login!!";
+      setErrorMsg(message);
+      setLoading(false);
+      return false;
+    }
+  };
+
+  const handleValidatePassword = (rule, value) => {
+    if (!value) {
+      return Promise.reject("Password is required!");
+    } else if (value.length < 8) {
+      return Promise.reject("Password must be at least 8 characters long!");
+    } else {
+      return Promise.resolve();
+    }
+  };
   return (
     <>
       <LoginStyle>
         <div className="container_wrap">
-          {/* {loading && <Spin spinning={loading} fullscreen size="large" />} */}
+          {loading && <Spin spinning={loading} fullscreen size="large" />}
 
           <div className="login_container">
             <div className="container_data">
               <h1 className="login_title">Sign In</h1>
               <div className="login_form">
                 <Form
-                //   onFinish={handleSubmit}
-                //   form={form}
+                  onFinish={handleSubmit}
+                  form={form}
                   className=""
                   autoComplete="off"
                   layout="vertical"
@@ -49,7 +133,7 @@ const Login = () => {
                     rules={[
                       {
                         required: true,
-                        // validator: handleValidatePassword,
+                        validator: handleValidatePassword,
                       },
                     ]}
                   >
@@ -60,17 +144,17 @@ const Login = () => {
                       maxLength={50}
                     />
                   </Form.Item>
-                  {/* {errorMsg && (
+                  {errorMsg && (
                     <p className="error_msg text-danger text-left mb-0 ">
                       {errorMsg}
                     </p>
-                  )} */}
+                  )}
 
                   <p className="signup_tag">
                     Don't have an account?{" "}
                     <span
                       className="signup_link"
-                    //   onClick={() => navigate("/register")}
+                      onClick={() => navigate("/register")}
                     >
                       Create here.
                     </span>
@@ -82,12 +166,11 @@ const Login = () => {
                       type="submit"
                       htmlType="submit"
                     >
-                      {/* {loading ? (
+                      {loading ? (
                         <Spin spinning={loading} size="small" />
                       ) : (
                         "Sign in"
-                      )} */}
-                      Sign In
+                      )}
                     </Button>
                   </div>
                 </Form>
