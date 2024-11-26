@@ -43,7 +43,7 @@ const Dashboard = () => {
         {CardData.map((item, index) => {
           return(
             <>
-              <div key={index} className="w-4/12 px-3 py-3 bg-sky-200 rounded-lg cursor-pointer shadow-2xl">
+              <div key={index} className="w-[144px] h-[auto] px-3 py-3 bg-sky-200 rounded-lg cursor-pointer shadow-2xl">
                 <h2 className="text-xl antialiased font-bold py-1.5">{item.name}</h2>
                 <p className="py-1.5">{item.role}</p>
                 <p className="py-1.5">{item.company}</p>
