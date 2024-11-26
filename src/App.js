@@ -1,6 +1,7 @@
 import "./App.css";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import NewReactFlow from "./NewReactFlow";
 import { SignUp } from "./Signup";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -16,7 +17,8 @@ function App() {
         </Routes>
       </Router> */}
 
-      <Dashboard />
+      {/* <Dashboard /> */}
+      <NewReactFlow />
     </div>
   );
 }
